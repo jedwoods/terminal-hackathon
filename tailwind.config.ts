@@ -13,6 +13,9 @@ export default {
       },
     },
     extend: {
+      fontFamily: {
+        mono: ["JetBrains Mono", "monospace"],
+      },
       colors: {
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
@@ -47,6 +50,13 @@ export default {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
+        terminal: {
+          green: "hsl(120 100% 50%)",
+          "green-dim": "hsl(120 50% 30%)",
+          "green-bright": "hsl(120 100% 60%)",
+          cyan: "hsl(180 100% 50%)",
+          black: "hsl(0 0% 5%)",
+        },
         sidebar: {
           DEFAULT: "hsl(var(--sidebar-background))",
           foreground: "hsl(var(--sidebar-foreground))",
@@ -80,10 +90,21 @@ export default {
             height: "0",
           },
         },
+        blink: {
+          "0%, 50%": { opacity: "1" },
+          "51%, 100%": { opacity: "0" },
+        },
+        flicker: {
+          "0%": { opacity: "0.97" },
+          "50%": { opacity: "1" },
+          "100%": { opacity: "0.98" },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
+        blink: "blink 1s step-end infinite",
+        flicker: "flicker 0.15s infinite",
       },
     },
   },
