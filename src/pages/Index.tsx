@@ -29,7 +29,7 @@ const CONTENT = {
   ],
   details: [
     '',
-    '> DATE: Tuesday, April 22nd, 2025',
+    '> DATE: Sunday, March 16th, 2025',
     '> TIME: 9:00am – 2:30pm',
     '> LOCATION: BYU Wilkinson Student Center (WSC Garden Court)',
     '',
@@ -95,6 +95,12 @@ const CONTENT = {
     '> COMMANDS AVAILABLE:',
     '',
   ],
+  sponsors: [
+    '',
+    '> SPONSORS / ACKNOWLEDGEMENTS:',
+    '  If you would like to sponsor this event, please contact info@byuhspc.org',
+    '',
+  ],
   footer: [
     '',
     '> SYSTEM READY. AWAITING INPUT...',
@@ -139,6 +145,7 @@ const Index = () => {
   const contestPlatformStart = getNextIndex(CONTENT.contestPlatform);
   const spectatorsStart = getNextIndex(CONTENT.spectators);
   const commandsStart = getNextIndex(CONTENT.commands);
+  const sponsorsStart = getNextIndex(CONTENT.sponsors);
   const footerStart = getNextIndex(CONTENT.footer);
 
   // Calculate if each section should show the cursor
@@ -395,6 +402,21 @@ const Index = () => {
           </div>
         </div>
       )}
+
+      {/* Sponsors Section */}
+      {CONTENT.sponsors.map((line, idx) => {
+        const lineStart = sponsorsStart + CONTENT.sponsors.slice(0, idx).reduce((sum, l) => sum + l.length + 1, 0);
+        return (
+          <TerminalLine
+            key={`sponsors-${idx}`}
+            text={line}
+            visibleLength={visibleLength}
+            startIndex={lineStart}
+            isLastVisible={lastVisibleStart === lineStart}
+            className={line.includes('SPONSORS') ? 'text-accent' : ''}
+          />
+        );
+      })}
 
       {/* Footer Section */}
       {CONTENT.footer.map((line, idx) => {
