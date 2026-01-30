@@ -31,16 +31,16 @@ export const Terminal = ({
         <div className="w-16" /> {/* Spacer for symmetry */}
       </div>
 
+      {/* Press key instructions - at top */}
+      <div className="px-4 py-2 border-b border-border text-xs text-muted-foreground text-center">
+        PRESS ANY KEY TO CONTINUE | TAB TO SKIP | © 2026 HACKATHON SYSTEMS
+      </div>
+
       {/* Terminal Content */}
       <div className="flex-1 p-6 md:p-10 overflow-auto">
         <div className="max-w-4xl mx-auto font-mono text-sm md:text-base leading-7 md:leading-8">
           {children}
         </div>
-      </div>
-
-      {/* Terminal Footer */}
-      <div className="px-4 py-2 border-t border-border text-xs text-muted-foreground text-center">
-        PRESS ANY KEY TO CONTINUE | TAB TO SKIP | © 2026 HACKATHON SYSTEMS
       </div>
     </div>
   );
