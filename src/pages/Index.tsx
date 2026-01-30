@@ -34,20 +34,61 @@ const CONTENT = {
     '> LOCATION: BYU Wilkinson Student Center (WSC Garden Court)',
     '',
   ],
+  schedule: [
+    '> SCHEDULE:',
+    '  8:00 – 8:50 am   Registration (outside WSC Varsity Theater)',
+    '  9:00 – 9:20 am   Opening Ceremony (WSC Varsity Theater)',
+    '  9:25 – 9:50 am   Setup/Testing (WSC Garden Court)',
+    '  10:00 am – 1:00 pm   Actual Programming Contest (WSC Garden Court)',
+    '  1:00 – 1:45 pm   Lunch',
+    '  2:00 – 2:30 pm   Results and Awards Ceremony (WSC Varsity Theater)',
+    '',
+  ],
   format: [
     '> CONTEST FORMAT:',
-    '  ├─ Teams of 1-3 students',
-    '  ├─ 5 programming challenges',
-    '  ├─ Languages: Python, Java, C++, JavaScript',
-    '  └─ 5 hours to solve as many as possible',
+    '  ├─ Teams of up to 3 students',
+    '  ├─ Contest platform: Kattis',
+    '  ├─ Languages: Java, Python3, C++, and more',
+    '  └─ Duration: 9:00am – 2:30pm',
     '',
   ],
   prizes: [
     '> PRIZES:',
-    '  [1ST PLACE] ════════ $500 + Trophies',
-    '  [2ND PLACE] ════════ $300 + Medals',
-    '  [3RD PLACE] ════════ $150 + Medals',
-    '  [BEST NEWCOMER] ════ $100 Special Award',
+    '  ├─ 1st – 5th Place Teams: Prizes/Gift Cards',
+    '  └─ 10+ additional prizes for randomly selected participants',
+    '',
+  ],
+  eligibility: [
+    '> ELIGIBILITY:',
+    '  Any high school student residing in the state of Utah may participate.',
+    '',
+  ],
+  registration: [
+    '> REGISTRATION:',
+    '  Registration must be completed by both students and teachers/coaches.',
+    '  Deadline: Midnight on Wednesday, April 9th, 2025',
+    '',
+  ],
+  computerSystems: [
+    '> COMPUTER SYSTEMS:',
+    '  Teams of up to 3 students will need to provide their own laptop',
+    '  (just 1 per team) with which they will access the contest platform',
+    '  via the internet.',
+    '',
+  ],
+  contestPlatform: [
+    '> CONTEST PLATFORM:',
+    '  The contest will be conducted on Kattis.',
+    '  Kattis supports Linux, MacOS, and Windows operating systems.',
+    '  Supported languages include Java, Python3, C++, and more.',
+    '  Teams are encouraged to practice on Kattis ahead of the contest.',
+    '  Practice problems and templates will be provided two weeks before.',
+    '',
+  ],
+  spectators: [
+    '> SPECTATORS:',
+    '  Family and friends are invited to watch through the contest leaderboard.',
+    '  The leaderboard will be published closer to the contest date.',
     '',
   ],
   commands: [
@@ -89,8 +130,14 @@ const Index = () => {
   const introStart = getNextIndex(CONTENT.intro);
   const bannerStart = getNextIndex(CONTENT.banner);
   const detailsStart = getNextIndex(CONTENT.details);
+  const scheduleStart = getNextIndex(CONTENT.schedule);
   const formatStart = getNextIndex(CONTENT.format);
   const prizesStart = getNextIndex(CONTENT.prizes);
+  const eligibilityStart = getNextIndex(CONTENT.eligibility);
+  const registrationStart = getNextIndex(CONTENT.registration);
+  const computerSystemsStart = getNextIndex(CONTENT.computerSystems);
+  const contestPlatformStart = getNextIndex(CONTENT.contestPlatform);
+  const spectatorsStart = getNextIndex(CONTENT.spectators);
   const commandsStart = getNextIndex(CONTENT.commands);
   const footerStart = getNextIndex(CONTENT.footer);
 
@@ -168,6 +215,21 @@ const Index = () => {
         </div>
       )}
 
+      {/* Schedule Section */}
+      {CONTENT.schedule.map((line, idx) => {
+        const lineStart = scheduleStart + CONTENT.schedule.slice(0, idx).reduce((sum, l) => sum + l.length + 1, 0);
+        return (
+          <TerminalLine
+            key={`schedule-${idx}`}
+            text={line}
+            visibleLength={visibleLength}
+            startIndex={lineStart}
+            isLastVisible={lastVisibleStart === lineStart}
+            className={line.includes('SCHEDULE') ? 'text-accent' : ''}
+          />
+        );
+      })}
+
       {/* Format Section */}
       {CONTENT.format.map((line, idx) => {
         const lineStart = formatStart + CONTENT.format.slice(0, idx).reduce((sum, l) => sum + l.length + 1, 0);
@@ -198,6 +260,113 @@ const Index = () => {
         );
       })}
 
+      {/* Eligibility Section */}
+      {CONTENT.eligibility.map((line, idx) => {
+        const lineStart = eligibilityStart + CONTENT.eligibility.slice(0, idx).reduce((sum, l) => sum + l.length + 1, 0);
+        return (
+          <TerminalLine
+            key={`eligibility-${idx}`}
+            text={line}
+            visibleLength={visibleLength}
+            startIndex={lineStart}
+            isLastVisible={lastVisibleStart === lineStart}
+            className={line.includes('ELIGIBILITY') ? 'text-accent' : ''}
+          />
+        );
+      })}
+
+      {/* Registration Section */}
+      {CONTENT.registration.map((line, idx) => {
+        const lineStart = registrationStart + CONTENT.registration.slice(0, idx).reduce((sum, l) => sum + l.length + 1, 0);
+        return (
+          <TerminalLine
+            key={`registration-${idx}`}
+            text={line}
+            visibleLength={visibleLength}
+            startIndex={lineStart}
+            isLastVisible={lastVisibleStart === lineStart}
+            className={line.includes('REGISTRATION') ? 'text-accent' : ''}
+          />
+        );
+      })}
+
+      {/* Registration Links - show when registration section is visible */}
+      {visibleLength > registrationStart + CONTENT.registration.reduce((sum, l) => sum + l.length + 1, 0) && (
+        <div className="space-y-1 my-2">
+          <div className="text-glow">
+            {'  > '}
+            <TerminalLink to="/register/student">[STUDENT_REGISTER]</TerminalLink>
+            {' - Register as a contestant'}
+          </div>
+          <div className="text-glow">
+            {'  > '}
+            <TerminalLink to="/register/coach">[COACH_REGISTER]</TerminalLink>
+            {' - Register as a team coach'}
+          </div>
+        </div>
+      )}
+
+      {/* Computer Systems Section */}
+      {CONTENT.computerSystems.map((line, idx) => {
+        const lineStart = computerSystemsStart + CONTENT.computerSystems.slice(0, idx).reduce((sum, l) => sum + l.length + 1, 0);
+        return (
+          <TerminalLine
+            key={`computerSystems-${idx}`}
+            text={line}
+            visibleLength={visibleLength}
+            startIndex={lineStart}
+            isLastVisible={lastVisibleStart === lineStart}
+            className={line.includes('COMPUTER SYSTEMS') ? 'text-accent' : ''}
+          />
+        );
+      })}
+
+      {/* Contest Platform Section */}
+      {CONTENT.contestPlatform.map((line, idx) => {
+        const lineStart = contestPlatformStart + CONTENT.contestPlatform.slice(0, idx).reduce((sum, l) => sum + l.length + 1, 0);
+        return (
+          <TerminalLine
+            key={`contestPlatform-${idx}`}
+            text={line}
+            visibleLength={visibleLength}
+            startIndex={lineStart}
+            isLastVisible={lastVisibleStart === lineStart}
+            className={line.includes('CONTEST PLATFORM') ? 'text-accent' : ''}
+          />
+        );
+      })}
+
+      {/* Kattis Link - show when contest platform section is visible */}
+      {visibleLength > contestPlatformStart + CONTENT.contestPlatform.reduce((sum, l) => sum + l.length + 1, 0) && (
+        <div className="text-glow my-2">
+          {'  > '}
+          <a
+            href="https://open.kattis.com/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-accent hover:bg-accent hover:text-accent-foreground transition-colors duration-150 px-1 text-glow focus:outline-none focus:ring-2 focus:ring-accent"
+          >
+            [KATTIS_PLATFORM]
+          </a>
+          {' - Practice on Kattis'}
+        </div>
+      )}
+
+      {/* Spectators Section */}
+      {CONTENT.spectators.map((line, idx) => {
+        const lineStart = spectatorsStart + CONTENT.spectators.slice(0, idx).reduce((sum, l) => sum + l.length + 1, 0);
+        return (
+          <TerminalLine
+            key={`spectators-${idx}`}
+            text={line}
+            visibleLength={visibleLength}
+            startIndex={lineStart}
+            isLastVisible={lastVisibleStart === lineStart}
+            className={line.includes('SPECTATORS') ? 'text-accent' : ''}
+          />
+        );
+      })}
+
       {/* Commands Section */}
       {CONTENT.commands.map((line, idx) => {
         const lineStart = commandsStart + CONTENT.commands.slice(0, idx).reduce((sum, l) => sum + l.length + 1, 0);
@@ -216,16 +385,6 @@ const Index = () => {
       {/* Interactive Links - show when commands section is visible */}
       {visibleLength > commandsStart + CONTENT.commands.reduce((sum, l) => sum + l.length + 1, 0) && (
         <div className="space-y-2 my-4">
-          <div className="text-glow">
-            {'  > '}
-            <TerminalLink to="/register/student">[STUDENT_REGISTER]</TerminalLink>
-            {' - Register as a contestant'}
-          </div>
-          <div className="text-glow">
-            {'  > '}
-            <TerminalLink to="/register/coach">[COACH_REGISTER]</TerminalLink>
-            {' - Register as a team coach'}
-          </div>
           <div className="text-glow text-muted-foreground">
             {'  > [RULES] - View complete rulebook (coming soon)'}
           </div>
