@@ -51,7 +51,7 @@ const CONTENT = {
   ],
   prizes: [
     '> PRIZES:',
-    '  ├─ 1st – 5th Place Teams: Prizes/Gift Cards',
+    '  ├─ 1st – 5th Place Teams: Gift Cards',
     '  └─ 10+ additional prizes for randomly selected participants',
     '',
   ],
@@ -100,7 +100,7 @@ const CONTENT = {
   ],
   footer: [
     '',
-    '> SYSTEM READY. AWAITING INPUT...',
+    '> PROGRAM TERMINATED',
   ],
 };
 
@@ -118,15 +118,13 @@ const calculateTotalLength = () => {
 const Index = () => {
   const navigate = useNavigate();
   const scrollTargetRef = useRef<HTMLDivElement | null>(null);
-  const endCursorRef = useRef<HTMLDivElement | null>(null);
   const totalLength = useMemo(() => calculateTotalLength(), []);
-  const { visibleLength, isComplete } = useTypingReveal({ totalLength, charsPerKeypress: 5 });
+  const { visibleLength } = useTypingReveal({ totalLength, charsPerKeypress: 5 });
 
   // Scroll to keep the revealed text / cursor in view
   useEffect(() => {
-    const target = isComplete ? endCursorRef.current : scrollTargetRef.current;
-    target?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-  }, [visibleLength, isComplete]);
+    scrollTargetRef.current?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }, [visibleLength]);
 
   // Track cumulative index for each section
   let currentIndex = 0;
@@ -172,6 +170,16 @@ const Index = () => {
   return (
     <Terminal>
       <div className="space-y-6">
+      {/* Blinking cursor before any text is revealed */}
+      {visibleLength === 0 && (
+        <section>
+          <div className="text-glow min-h-[1.5em] leading-7">
+            {'> '}
+            <TerminalCursor />
+          </div>
+        </section>
+      )}
+
       {/* Intro Section */}
       <section>
       {CONTENT.intro.map((line, idx) => {
@@ -504,15 +512,6 @@ const Index = () => {
       })}
       </section>
 
-      {/* Show blinking cursor at the end when complete */}
-      {isComplete && (
-        <section>
-        <div ref={endCursorRef} className="mt-4 text-glow">
-          {'> '}
-          <TerminalCursor />
-        </div>
-        </section>
-      )}
       </div>
     </Terminal>
   );
