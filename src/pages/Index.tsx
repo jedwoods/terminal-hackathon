@@ -14,18 +14,15 @@ const CONTENT = {
     '',
   ],
   banner: [
-    '████████████████████████████████████████████████████████████',
-    '█                                                          █',
-    '█   ██   ██  █████  █████ ██  ██      ████  █████  ████    █',
-    '█   ██   ██ ██   ██ ██    ██ ██      ██  ██ ██  ██ ██      █',
-    '█   ███████ ███████ ██    ████       ██  ██ ██  ██ ████    █',
-    '█   ██   ██ ██   ██ ██    ██ ██      ██  ██ ██  ██ ██      █',
-    '█   ██   ██ ██   ██ █████ ██  ██      ████  █████  ████    █',
-    '█                                                          █',
-    '█        HIGH SCHOOL PROGRAMMING CONTEST 2026              █',
-    '█              "HACK THE FUTURE"                           █',
-    '█                                                          █',
-    '████████████████████████████████████████████████████████████',
+    '██████████████████████████████████████████████',
+    '█                                            █',
+    '█  ████  █   █ █   █     █   █ ███ ████  ███ █',
+    '█  █   █ █   █ █   █     █   █ █   █   █ █   █',
+    '█  ████   █ █  █   █     █████ ███ ████  █   █',
+    '█  █   █   █   █   █     █   █   █ █     █   █',
+    '█  ████    █    ███      █   █ ███ █      ██ █',
+    '█                                            █',
+    '██████████████████████████████████████████████',
   ],
   details: [
     '',
@@ -165,7 +162,9 @@ const Index = () => {
 
   return (
     <Terminal>
+      <div className="space-y-6">
       {/* Intro Section */}
+      <section>
       {CONTENT.intro.map((line, idx) => {
         const lineStart = introStart + CONTENT.intro.slice(0, idx).reduce((sum, l) => sum + l.length + 1, 0);
         return (
@@ -179,8 +178,10 @@ const Index = () => {
           />
         );
       })}
+      </section>
 
       {/* ASCII Banner */}
+      <section>
       {visibleLength > introStart + CONTENT.intro.reduce((sum, l) => sum + l.length + 1, 0) && (
         <div className="my-4 text-xs md:text-sm overflow-x-auto">
           <TerminalBlock
@@ -188,11 +189,14 @@ const Index = () => {
             visibleLength={visibleLength}
             startIndex={bannerStart}
             className="text-primary"
+            tight
           />
         </div>
       )}
+      </section>
 
       {/* Details Section */}
+      <section>
       {CONTENT.details.map((line, idx) => {
         const lineStart = detailsStart + CONTENT.details.slice(0, idx).reduce((sum, l) => sum + l.length + 1, 0);
         return (
@@ -208,7 +212,7 @@ const Index = () => {
 
       {/* Directions Link - show when details section is visible */}
       {visibleLength > detailsStart + CONTENT.details.reduce((sum, l) => sum + l.length + 1, 0) && (
-        <div className="text-glow my-2">
+        <div className="text-glow my-2 leading-7">
           {'  > '}
           <a
             href="https://map.byu.edu/"
@@ -221,8 +225,10 @@ const Index = () => {
           {' - Get directions to BYU Wilkinson Student Center'}
         </div>
       )}
+      </section>
 
       {/* Schedule Section */}
+      <section>
       {CONTENT.schedule.map((line, idx) => {
         const lineStart = scheduleStart + CONTENT.schedule.slice(0, idx).reduce((sum, l) => sum + l.length + 1, 0);
         return (
@@ -236,8 +242,10 @@ const Index = () => {
           />
         );
       })}
+      </section>
 
       {/* Format Section */}
+      <section>
       {CONTENT.format.map((line, idx) => {
         const lineStart = formatStart + CONTENT.format.slice(0, idx).reduce((sum, l) => sum + l.length + 1, 0);
         return (
@@ -251,8 +259,10 @@ const Index = () => {
           />
         );
       })}
+      </section>
 
       {/* Prizes Section */}
+      <section>
       {CONTENT.prizes.map((line, idx) => {
         const lineStart = prizesStart + CONTENT.prizes.slice(0, idx).reduce((sum, l) => sum + l.length + 1, 0);
         return (
@@ -266,8 +276,10 @@ const Index = () => {
           />
         );
       })}
+      </section>
 
       {/* Eligibility Section */}
+      <section>
       {CONTENT.eligibility.map((line, idx) => {
         const lineStart = eligibilityStart + CONTENT.eligibility.slice(0, idx).reduce((sum, l) => sum + l.length + 1, 0);
         return (
@@ -281,8 +293,10 @@ const Index = () => {
           />
         );
       })}
+      </section>
 
       {/* Registration Section */}
+      <section>
       {CONTENT.registration.map((line, idx) => {
         const lineStart = registrationStart + CONTENT.registration.slice(0, idx).reduce((sum, l) => sum + l.length + 1, 0);
         return (
@@ -299,10 +313,17 @@ const Index = () => {
 
       {/* Registration Links - show when registration section is visible */}
       {visibleLength > registrationStart + CONTENT.registration.reduce((sum, l) => sum + l.length + 1, 0) && (
-        <div className="space-y-1 my-2">
+        <div className="space-y-2 my-2 leading-7">
           <div className="text-glow">
             {'  > '}
-            <TerminalLink to="/register/student">[STUDENT_REGISTER]</TerminalLink>
+            <a
+              href="https://forms.gle/FdP2o9h523yQWDvY6"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-accent hover:bg-accent hover:text-accent-foreground transition-colors duration-150 px-1 text-glow focus:outline-none focus:ring-2 focus:ring-accent"
+            >
+              [STUDENT_REGISTRATION]
+            </a>
             {' - Register as a contestant'}
           </div>
           <div className="text-glow">
@@ -313,14 +334,16 @@ const Index = () => {
               rel="noopener noreferrer"
               className="text-accent hover:bg-accent hover:text-accent-foreground transition-colors duration-150 px-1 text-glow focus:outline-none focus:ring-2 focus:ring-accent"
             >
-              [COACH_REGISTER]
+              [COACH_REGISTRATION]
             </a>
             {' - Register as a team coach'}
           </div>
         </div>
       )}
+      </section>
 
       {/* Computer Systems Section */}
+      <section>
       {CONTENT.computerSystems.map((line, idx) => {
         const lineStart = computerSystemsStart + CONTENT.computerSystems.slice(0, idx).reduce((sum, l) => sum + l.length + 1, 0);
         return (
@@ -334,8 +357,10 @@ const Index = () => {
           />
         );
       })}
+      </section>
 
       {/* Contest Platform Section */}
+      <section>
       {CONTENT.contestPlatform.map((line, idx) => {
         const lineStart = contestPlatformStart + CONTENT.contestPlatform.slice(0, idx).reduce((sum, l) => sum + l.length + 1, 0);
         return (
@@ -352,7 +377,7 @@ const Index = () => {
 
       {/* Kattis Link - show when contest platform section is visible */}
       {visibleLength > contestPlatformStart + CONTENT.contestPlatform.reduce((sum, l) => sum + l.length + 1, 0) && (
-        <div className="text-glow my-2">
+        <div className="text-glow my-2 leading-7">
           {'  > '}
           <a
             href="https://open.kattis.com/"
@@ -365,8 +390,10 @@ const Index = () => {
           {' - Practice on Kattis'}
         </div>
       )}
+      </section>
 
       {/* Spectators Section */}
+      <section>
       {CONTENT.spectators.map((line, idx) => {
         const lineStart = spectatorsStart + CONTENT.spectators.slice(0, idx).reduce((sum, l) => sum + l.length + 1, 0);
         return (
@@ -380,8 +407,10 @@ const Index = () => {
           />
         );
       })}
+      </section>
 
       {/* Commands Section */}
+      <section>
       {CONTENT.commands.map((line, idx) => {
         const lineStart = commandsStart + CONTENT.commands.slice(0, idx).reduce((sum, l) => sum + l.length + 1, 0);
         return (
@@ -398,7 +427,7 @@ const Index = () => {
 
       {/* Interactive Links - show when commands section is visible */}
       {visibleLength > commandsStart + CONTENT.commands.reduce((sum, l) => sum + l.length + 1, 0) && (
-        <div className="space-y-2 my-4">
+        <div className="space-y-2 my-4 leading-7">
           <div className="text-glow text-muted-foreground">
             {'  > [RULES] - View complete rulebook (coming soon)'}
           </div>
@@ -409,8 +438,10 @@ const Index = () => {
           </div>
         </div>
       )}
+      </section>
 
       {/* Sponsors Section */}
+      <section>
       {CONTENT.sponsors.map((line, idx) => {
         const lineStart = sponsorsStart + CONTENT.sponsors.slice(0, idx).reduce((sum, l) => sum + l.length + 1, 0);
         return (
@@ -424,8 +455,10 @@ const Index = () => {
           />
         );
       })}
+      </section>
 
       {/* Footer Section */}
+      <section>
       {CONTENT.footer.map((line, idx) => {
         const lineStart = footerStart + CONTENT.footer.slice(0, idx).reduce((sum, l) => sum + l.length + 1, 0);
         return (
@@ -438,14 +471,18 @@ const Index = () => {
           />
         );
       })}
+      </section>
 
       {/* Show blinking cursor at the end when complete */}
       {isComplete && (
+        <section>
         <div className="mt-4 text-glow">
           {'> '}
           <TerminalCursor />
         </div>
+        </section>
       )}
+      </div>
     </Terminal>
   );
 };

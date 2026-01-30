@@ -8,6 +8,7 @@ interface TerminalLineProps {
   isLastVisible?: boolean;
   className?: string;
   prefix?: string;
+  tight?: boolean;
 }
 
 export const TerminalLine = ({
@@ -17,6 +18,7 @@ export const TerminalLine = ({
   isLastVisible = false,
   className,
   prefix = '',
+  tight = false,
 }: TerminalLineProps) => {
   const fullText = prefix + text;
   const endIndex = startIndex + fullText.length;
@@ -31,7 +33,13 @@ export const TerminalLine = ({
   }
 
   return (
-    <div className={cn('text-glow whitespace-pre-wrap', className)}>
+    <div
+      className={cn(
+        'text-glow whitespace-pre-wrap',
+        tight ? 'min-h-0 leading-[1.15]' : 'min-h-[1.5em] leading-7',
+        className
+      )}
+    >
       <span className="text-foreground">{visibleText}</span>
       {isLastVisible && visibleChars < fullText.length && <TerminalCursor />}
     </div>
@@ -44,6 +52,7 @@ interface TerminalBlockProps {
   visibleLength: number;
   startIndex: number;
   className?: string;
+  tight?: boolean;
 }
 
 export const TerminalBlock = ({
@@ -51,6 +60,7 @@ export const TerminalBlock = ({
   visibleLength,
   startIndex,
   className,
+  tight = false,
 }: TerminalBlockProps) => {
   let currentIndex = startIndex;
 
@@ -70,6 +80,7 @@ export const TerminalBlock = ({
             visibleLength={visibleLength}
             startIndex={lineStart}
             isLastVisible={visibleLength < currentIndex && visibleLength >= lineStart}
+            tight={tight}
           />
         );
       })}

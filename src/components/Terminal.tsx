@@ -32,8 +32,8 @@ export const Terminal = ({
       </div>
 
       {/* Terminal Content */}
-      <div className="flex-1 p-4 md:p-8 overflow-auto">
-        <div className="max-w-4xl mx-auto font-mono text-sm md:text-base leading-relaxed">
+      <div className="flex-1 p-6 md:p-10 overflow-auto">
+        <div className="max-w-4xl mx-auto font-mono text-sm md:text-base leading-7 md:leading-8">
           {children}
         </div>
       </div>
