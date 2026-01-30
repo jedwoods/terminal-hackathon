@@ -29,9 +29,9 @@ const CONTENT = {
   ],
   details: [
     '',
-    '> DATE: March 15, 2026',
-    '> LOCATION: Central High School Auditorium',
-    '> CHECK-IN: 8:00 AM | COMPETITION: 9:00 AM - 4:00 PM',
+    '> DATE: Tuesday, April 22nd, 2025',
+    '> TIME: 9:00am – 2:30pm',
+    '> LOCATION: BYU Wilkinson Student Center (WSC Garden Court)',
     '',
   ],
   format: [
@@ -151,6 +151,22 @@ const Index = () => {
           />
         );
       })}
+
+      {/* Directions Link - show when details section is visible */}
+      {visibleLength > detailsStart + CONTENT.details.reduce((sum, l) => sum + l.length + 1, 0) && (
+        <div className="text-glow my-2">
+          {'  > '}
+          <a
+            href="https://map.byu.edu/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-accent hover:bg-accent hover:text-accent-foreground transition-colors duration-150 px-1 text-glow focus:outline-none focus:ring-2 focus:ring-accent"
+          >
+            [DIRECTIONS]
+          </a>
+          {' - Get directions to BYU Wilkinson Student Center'}
+        </div>
+      )}
 
       {/* Format Section */}
       {CONTENT.format.map((line, idx) => {
