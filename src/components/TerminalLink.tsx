@@ -12,9 +12,10 @@ export const TerminalLink = ({ to, children, className }: TerminalLinkProps) => 
     <Link
       to={to}
       className={cn(
-        'text-accent hover:bg-accent hover:text-accent-foreground',
+        '!text-accent hover:bg-accent hover:text-accent-foreground',
         'transition-colors duration-150 px-1',
         'text-glow focus:outline-none focus:ring-2 focus:ring-accent',
+        'no-underline',
         className
       )}
     >

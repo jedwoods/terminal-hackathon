@@ -1,8 +1,8 @@
-import { useMemo } from 'react';
+import { useMemo, useRef, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Terminal } from '@/components/Terminal';
 import { TerminalLine, TerminalBlock } from '@/components/TerminalLine';
 import { TerminalCursor } from '@/components/TerminalCursor';
-import { TerminalLink } from '@/components/TerminalLink';
 import { useTypingReveal } from '@/hooks/useTypingReveal';
 
 // Contest content structure
@@ -116,8 +116,17 @@ const calculateTotalLength = () => {
 };
 
 const Index = () => {
+  const navigate = useNavigate();
+  const scrollTargetRef = useRef<HTMLDivElement | null>(null);
+  const endCursorRef = useRef<HTMLDivElement | null>(null);
   const totalLength = useMemo(() => calculateTotalLength(), []);
   const { visibleLength, isComplete } = useTypingReveal({ totalLength, charsPerKeypress: 5 });
+
+  // Scroll to keep the revealed text / cursor in view
+  useEffect(() => {
+    const target = isComplete ? endCursorRef.current : scrollTargetRef.current;
+    target?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }, [visibleLength, isComplete]);
 
   // Track cumulative index for each section
   let currentIndex = 0;
@@ -170,6 +179,7 @@ const Index = () => {
         return (
           <TerminalLine
             key={`intro-${idx}`}
+            ref={lastVisibleStart === lineStart ? scrollTargetRef : undefined}
             text={line}
             visibleLength={visibleLength}
             startIndex={lineStart}
@@ -190,10 +200,43 @@ const Index = () => {
             startIndex={bannerStart}
             className="text-primary"
             tight
+            scrollTargetRef={scrollTargetRef}
           />
         </div>
       )}
       </section>
+
+      {/* Registration Links - below banner */}
+      {visibleLength > bannerStart + CONTENT.banner.reduce((sum, l) => sum + l.length + 1, 0) && (
+        <section>
+          <div className="space-y-2 my-2 leading-7">
+            <div className="text-glow">
+              {'  > '}
+              <a
+                href="https://forms.gle/FdP2o9h523yQWDvY6"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-accent hover:bg-accent hover:text-accent-foreground transition-colors duration-150 px-1 text-glow focus:outline-none focus:ring-2 focus:ring-accent"
+              >
+                [STUDENT_REGISTRATION]
+              </a>
+              {' - Register as a contestant'}
+            </div>
+            <div className="text-glow">
+              {'  > '}
+              <a
+                href="https://forms.gle/VD48wXV1qqoMDCUZA"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-accent hover:bg-accent hover:text-accent-foreground transition-colors duration-150 px-1 text-glow focus:outline-none focus:ring-2 focus:ring-accent"
+              >
+                [COACH_REGISTRATION]
+              </a>
+              {' - Register as a team coach'}
+            </div>
+          </div>
+        </section>
+      )}
 
       {/* Details Section */}
       <section>
@@ -202,6 +245,7 @@ const Index = () => {
         return (
           <TerminalLine
             key={`details-${idx}`}
+            ref={lastVisibleStart === lineStart ? scrollTargetRef : undefined}
             text={line}
             visibleLength={visibleLength}
             startIndex={lineStart}
@@ -234,6 +278,7 @@ const Index = () => {
         return (
           <TerminalLine
             key={`schedule-${idx}`}
+            ref={lastVisibleStart === lineStart ? scrollTargetRef : undefined}
             text={line}
             visibleLength={visibleLength}
             startIndex={lineStart}
@@ -251,6 +296,7 @@ const Index = () => {
         return (
           <TerminalLine
             key={`format-${idx}`}
+            ref={lastVisibleStart === lineStart ? scrollTargetRef : undefined}
             text={line}
             visibleLength={visibleLength}
             startIndex={lineStart}
@@ -268,6 +314,7 @@ const Index = () => {
         return (
           <TerminalLine
             key={`prizes-${idx}`}
+            ref={lastVisibleStart === lineStart ? scrollTargetRef : undefined}
             text={line}
             visibleLength={visibleLength}
             startIndex={lineStart}
@@ -285,6 +332,7 @@ const Index = () => {
         return (
           <TerminalLine
             key={`eligibility-${idx}`}
+            ref={lastVisibleStart === lineStart ? scrollTargetRef : undefined}
             text={line}
             visibleLength={visibleLength}
             startIndex={lineStart}
@@ -302,6 +350,7 @@ const Index = () => {
         return (
           <TerminalLine
             key={`registration-${idx}`}
+            ref={lastVisibleStart === lineStart ? scrollTargetRef : undefined}
             text={line}
             visibleLength={visibleLength}
             startIndex={lineStart}
@@ -310,36 +359,6 @@ const Index = () => {
           />
         );
       })}
-
-      {/* Registration Links - show when registration section is visible */}
-      {visibleLength > registrationStart + CONTENT.registration.reduce((sum, l) => sum + l.length + 1, 0) && (
-        <div className="space-y-2 my-2 leading-7">
-          <div className="text-glow">
-            {'  > '}
-            <a
-              href="https://forms.gle/FdP2o9h523yQWDvY6"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-accent hover:bg-accent hover:text-accent-foreground transition-colors duration-150 px-1 text-glow focus:outline-none focus:ring-2 focus:ring-accent"
-            >
-              [STUDENT_REGISTRATION]
-            </a>
-            {' - Register as a contestant'}
-          </div>
-          <div className="text-glow">
-            {'  > '}
-            <a
-              href="https://forms.gle/VD48wXV1qqoMDCUZA"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-accent hover:bg-accent hover:text-accent-foreground transition-colors duration-150 px-1 text-glow focus:outline-none focus:ring-2 focus:ring-accent"
-            >
-              [COACH_REGISTRATION]
-            </a>
-            {' - Register as a team coach'}
-          </div>
-        </div>
-      )}
       </section>
 
       {/* Computer Systems Section */}
@@ -349,6 +368,7 @@ const Index = () => {
         return (
           <TerminalLine
             key={`computerSystems-${idx}`}
+            ref={lastVisibleStart === lineStart ? scrollTargetRef : undefined}
             text={line}
             visibleLength={visibleLength}
             startIndex={lineStart}
@@ -366,6 +386,7 @@ const Index = () => {
         return (
           <TerminalLine
             key={`contestPlatform-${idx}`}
+            ref={lastVisibleStart === lineStart ? scrollTargetRef : undefined}
             text={line}
             visibleLength={visibleLength}
             startIndex={lineStart}
@@ -399,6 +420,7 @@ const Index = () => {
         return (
           <TerminalLine
             key={`spectators-${idx}`}
+            ref={lastVisibleStart === lineStart ? scrollTargetRef : undefined}
             text={line}
             visibleLength={visibleLength}
             startIndex={lineStart}
@@ -416,6 +438,7 @@ const Index = () => {
         return (
           <TerminalLine
             key={`commands-${idx}`}
+            ref={lastVisibleStart === lineStart ? scrollTargetRef : undefined}
             text={line}
             visibleLength={visibleLength}
             startIndex={lineStart}
@@ -428,12 +451,18 @@ const Index = () => {
       {/* Interactive Links - show when commands section is visible */}
       {visibleLength > commandsStart + CONTENT.commands.reduce((sum, l) => sum + l.length + 1, 0) && (
         <div className="space-y-2 my-4 leading-7">
-          <div className="text-glow text-muted-foreground">
-            {'  > [RULES] - View complete rulebook (coming soon)'}
-          </div>
           <div className="text-glow">
             {'  > '}
-            <TerminalLink to="/faq">[FAQ]</TerminalLink>
+            <a
+              href="/faq"
+              onClick={(e) => {
+                e.preventDefault();
+                navigate('/faq');
+              }}
+              className="text-accent hover:bg-accent hover:text-accent-foreground transition-colors duration-150 px-1 text-glow focus:outline-none focus:ring-2 focus:ring-accent"
+            >
+              [FAQ]
+            </a>
             {' - Frequently asked questions'}
           </div>
         </div>
@@ -447,6 +476,7 @@ const Index = () => {
         return (
           <TerminalLine
             key={`sponsors-${idx}`}
+            ref={lastVisibleStart === lineStart ? scrollTargetRef : undefined}
             text={line}
             visibleLength={visibleLength}
             startIndex={lineStart}
@@ -464,6 +494,7 @@ const Index = () => {
         return (
           <TerminalLine
             key={`footer-${idx}`}
+            ref={lastVisibleStart === lineStart ? scrollTargetRef : undefined}
             text={line}
             visibleLength={visibleLength}
             startIndex={lineStart}
@@ -476,7 +507,7 @@ const Index = () => {
       {/* Show blinking cursor at the end when complete */}
       {isComplete && (
         <section>
-        <div className="mt-4 text-glow">
+        <div ref={endCursorRef} className="mt-4 text-glow">
           {'> '}
           <TerminalCursor />
         </div>

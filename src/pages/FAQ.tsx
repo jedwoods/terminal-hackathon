@@ -1,4 +1,4 @@
-import { useMemo } from 'react';
+import { useMemo, useRef, useEffect } from 'react';
 import { Terminal } from '@/components/Terminal';
 import { TerminalLine } from '@/components/TerminalLine';
 import { TerminalCursor } from '@/components/TerminalCursor';
@@ -125,8 +125,16 @@ const calculateTotalLength = () => {
 };
 
 const FAQ = () => {
+  const scrollTargetRef = useRef<HTMLDivElement | null>(null);
+  const endCursorRef = useRef<HTMLDivElement | null>(null);
   const totalLength = useMemo(() => calculateTotalLength(), []);
   const { visibleLength, isComplete } = useTypingReveal({ totalLength, charsPerKeypress: 5 });
+
+  // Scroll to keep the revealed text / cursor in view
+  useEffect(() => {
+    const target = isComplete ? endCursorRef.current : scrollTargetRef.current;
+    target?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }, [visibleLength, isComplete]);
 
   // Track cumulative index for each section
   let currentIndex = 0;
@@ -174,6 +182,7 @@ const FAQ = () => {
       return (
         <TerminalLine
           key={`${sectionName}-${idx}`}
+          ref={lastVisibleStart === lineStart ? scrollTargetRef : undefined}
           text={line}
           visibleLength={visibleLength}
           startIndex={lineStart}
@@ -185,19 +194,16 @@ const FAQ = () => {
   };
 
   return (
-    <>
-      {/* Fixed Home Button at Top */}
-      <div className="fixed top-4 left-4 z-50">
-        <div className="text-glow">
-          {'> '}
-          <TerminalLink to="/">[HOME]</TerminalLink>
-          {' - Return to main page'}
-        </div>
+    <Terminal>
+      {/* Home link - inline at top, no overlap */}
+      <div className="text-glow mb-6">
+        {'> '}
+        <TerminalLink to="/">[HOME]</TerminalLink>
+        {' - Return to main page'}
       </div>
 
-      <Terminal>
-        {/* Intro Section */}
-        {renderSection('intro', introStart, 'intro')}
+      {/* Intro Section */}
+      {renderSection('intro', introStart, 'intro')}
 
       {/* Header Section */}
       {renderSection('header', headerStart, 'header')}
@@ -248,13 +254,12 @@ const FAQ = () => {
 
       {/* Show blinking cursor at the end when complete */}
       {isComplete && (
-        <div className="mt-4 text-glow">
+        <div ref={endCursorRef} className="mt-4 text-glow">
           {'> '}
           <TerminalCursor />
         </div>
       )}
     </Terminal>
-    </>
   );
 };
 

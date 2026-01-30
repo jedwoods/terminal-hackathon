@@ -1,3 +1,4 @@
+import { forwardRef } from 'react';
 import { cn } from '@/lib/utils';
 import { TerminalCursor } from './TerminalCursor';
 
@@ -11,15 +12,18 @@ interface TerminalLineProps {
   tight?: boolean;
 }
 
-export const TerminalLine = ({
-  text,
-  visibleLength,
-  startIndex,
-  isLastVisible = false,
-  className,
-  prefix = '',
-  tight = false,
-}: TerminalLineProps) => {
+export const TerminalLine = forwardRef<HTMLDivElement, TerminalLineProps>(function TerminalLine(
+  {
+    text,
+    visibleLength,
+    startIndex,
+    isLastVisible = false,
+    className,
+    prefix = '',
+    tight = false,
+  },
+  ref
+) {
   const fullText = prefix + text;
   const endIndex = startIndex + fullText.length;
 
@@ -34,6 +38,7 @@ export const TerminalLine = ({
 
   return (
     <div
+      ref={ref}
       className={cn(
         'text-glow whitespace-pre-wrap',
         tight ? 'min-h-0 leading-[1.15]' : 'min-h-[1.5em] leading-7',
@@ -44,7 +49,7 @@ export const TerminalLine = ({
       {isLastVisible && visibleChars < fullText.length && <TerminalCursor />}
     </div>
   );
-};
+});
 
 // Helper component for ASCII art blocks
 interface TerminalBlockProps {
@@ -53,6 +58,7 @@ interface TerminalBlockProps {
   startIndex: number;
   className?: string;
   tight?: boolean;
+  scrollTargetRef?: React.RefObject<HTMLDivElement | null>;
 }
 
 export const TerminalBlock = ({
@@ -61,6 +67,7 @@ export const TerminalBlock = ({
   startIndex,
   className,
   tight = false,
+  scrollTargetRef,
 }: TerminalBlockProps) => {
   let currentIndex = startIndex;
 
@@ -73,13 +80,16 @@ export const TerminalBlock = ({
         const isVisible = visibleLength > lineStart;
         if (!isVisible) return null;
 
+        const isLastVisible = visibleLength < currentIndex && visibleLength >= lineStart;
+
         return (
           <TerminalLine
             key={idx}
+            ref={isLastVisible ? scrollTargetRef : undefined}
             text={line}
             visibleLength={visibleLength}
             startIndex={lineStart}
-            isLastVisible={visibleLength < currentIndex && visibleLength >= lineStart}
+            isLastVisible={isLastVisible}
             tight={tight}
           />
         );
