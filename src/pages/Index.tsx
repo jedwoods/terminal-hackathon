@@ -307,7 +307,14 @@ const Index = () => {
           </div>
           <div className="text-glow">
             {'  > '}
-            <TerminalLink to="/register/coach">[COACH_REGISTER]</TerminalLink>
+            <a
+              href="https://forms.gle/VD48wXV1qqoMDCUZA"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-accent hover:bg-accent hover:text-accent-foreground transition-colors duration-150 px-1 text-glow focus:outline-none focus:ring-2 focus:ring-accent"
+            >
+              [COACH_REGISTER]
+            </a>
             {' - Register as a team coach'}
           </div>
         </div>
