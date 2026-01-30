@@ -64,6 +64,20 @@ This project is built with:
 
 Simply open [Lovable](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and click on Share -> Publish.
 
+### Deploying to GitHub Pages (byuhspc.org/2026/)
+
+The project is configured for **https://byuhspc.org/2026/**.
+
+1. **Build for deployment**  
+   Run:
+   ```sh
+   npm run build:gh
+   ```
+   This builds the app and copies `dist/index.html` to `dist/404.html` so direct links and refreshes on routes like `/2026/faq` work.
+
+2. **Publish the `dist` folder**  
+   Deploy the contents of `dist` so they are served from the `/2026/` path on your host (e.g. GitHub Pages, with the site or repo configured so that the built files live under `/2026/`).
+
 ## Can I connect a custom domain to my Lovable project?
 
 Yes, you can!
