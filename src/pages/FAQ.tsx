@@ -195,70 +195,78 @@ const FAQ = () => {
 
   return (
     <Terminal>
-      {/* Home link - inline at top, no overlap */}
-      <div className="text-glow mb-6">
-        {'> '}
-        <TerminalLink to="/">[HOME]</TerminalLink>
-        {' - Return to main page'}
+      <div className="space-y-6">
+        {/* Home link - inline at top, no overlap */}
+        <section>
+          <div className="text-glow leading-7">
+            {'> '}
+            <TerminalLink to="/">[HOME]</TerminalLink>
+            {' - Return to main page'}
+          </div>
+        </section>
+
+        {/* Intro Section */}
+        <section>{renderSection('intro', introStart, 'intro')}</section>
+
+        {/* Header Section */}
+        <section>{renderSection('header', headerStart, 'header')}</section>
+
+        {/* Q1 Section */}
+        <section>{renderSection('q1', q1Start, 'q1')}</section>
+
+        {/* Q2 Section */}
+        <section>{renderSection('q2', q2Start, 'q2')}</section>
+
+        {/* Q3 Section */}
+        <section>{renderSection('q3', q3Start, 'q3')}</section>
+
+        {/* Q4 Section */}
+        <section>{renderSection('q4', q4Start, 'q4')}</section>
+
+        {/* Q5 Section */}
+        <section>{renderSection('q5', q5Start, 'q5')}</section>
+
+        {/* Q6 Section */}
+        <section>{renderSection('q6', q6Start, 'q6')}</section>
+
+        {/* Q7 Section */}
+        <section>{renderSection('q7', q7Start, 'q7')}</section>
+
+        {/* Q8 Section */}
+        <section>{renderSection('q8', q8Start, 'q8')}</section>
+
+        {/* Q9 Section */}
+        <section>{renderSection('q9', q9Start, 'q9')}</section>
+
+        {/* Footer Section */}
+        <section>{renderSection('footer', footerStart, 'footer')}</section>
+
+        {/* Email Link - show when footer section is visible */}
+        {visibleLength > footerStart + CONTENT.footer.slice(0, -1).reduce((sum, l) => sum + l.length + 1, 0) && (
+          <section>
+            <div className="text-glow my-2 leading-7">
+              {'  > '}
+              <a
+                href="mailto:info@byuhspc.org"
+                className="text-accent hover:bg-accent hover:text-accent-foreground transition-colors duration-150 px-1 text-glow focus:outline-none focus:ring-2 focus:ring-accent"
+              >
+                [EMAIL]
+              </a>
+              {' - Contact us at info@byuhspc.org'}
+            </div>
+          </section>
+        )}
+
+        {/* Show blinking cursor at the end when complete */}
+        {isComplete && (
+          <section>
+            <div ref={endCursorRef} className="mt-4 text-glow leading-7">
+              {'> '}
+              <TerminalCursor />
+            </div>
+          </section>
+        )}
       </div>
-
-      {/* Intro Section */}
-      {renderSection('intro', introStart, 'intro')}
-
-      {/* Header Section */}
-      {renderSection('header', headerStart, 'header')}
-
-      {/* Q1 Section */}
-      {renderSection('q1', q1Start, 'q1')}
-
-      {/* Q2 Section */}
-      {renderSection('q2', q2Start, 'q2')}
-
-      {/* Q3 Section */}
-      {renderSection('q3', q3Start, 'q3')}
-
-      {/* Q4 Section */}
-      {renderSection('q4', q4Start, 'q4')}
-
-      {/* Q5 Section */}
-      {renderSection('q5', q5Start, 'q5')}
-
-      {/* Q6 Section */}
-      {renderSection('q6', q6Start, 'q6')}
-
-      {/* Q7 Section */}
-      {renderSection('q7', q7Start, 'q7')}
-
-      {/* Q8 Section */}
-      {renderSection('q8', q8Start, 'q8')}
-
-      {/* Q9 Section */}
-      {renderSection('q9', q9Start, 'q9')}
-
-      {/* Footer Section */}
-      {renderSection('footer', footerStart, 'footer')}
-
-      {/* Email Link - show when footer section is visible */}
-      {visibleLength > footerStart + CONTENT.footer.slice(0, -1).reduce((sum, l) => sum + l.length + 1, 0) && (
-        <div className="text-glow my-2">
-          {'  > '}
-          <a
-            href="mailto:info@byuhspc.org"
-            className="text-accent hover:bg-accent hover:text-accent-foreground transition-colors duration-150 px-1 text-glow focus:outline-none focus:ring-2 focus:ring-accent"
-          >
-            [EMAIL]
-          </a>
-          {' - Contact us at info@byuhspc.org'}
-        </div>
-      )}
-
-      {/* Show blinking cursor at the end when complete */}
-      {isComplete && (
-        <div ref={endCursorRef} className="mt-4 text-glow">
-          {'> '}
-          <TerminalCursor />
-        </div>
-      )}
     </Terminal>
   );
 };

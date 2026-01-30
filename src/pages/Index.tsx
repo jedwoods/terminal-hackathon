@@ -26,7 +26,7 @@ const CONTENT = {
   ],
   details: [
     '',
-    '> DATE: Sunday, March 16th, 2025',
+    '> DATE: Monday, March 16th, 2025',
     '> TIME: 9:00am – 2:30pm',
     '> LOCATION: BYU Wilkinson Student Center (WSC Garden Court)',
     '',
