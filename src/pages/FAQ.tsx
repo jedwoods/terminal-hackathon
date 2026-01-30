@@ -1,7 +1,6 @@
 import { useMemo, useRef, useEffect } from 'react';
 import { Terminal } from '@/components/Terminal';
 import { TerminalLine } from '@/components/TerminalLine';
-import { TerminalCursor } from '@/components/TerminalCursor';
 import { TerminalLink } from '@/components/TerminalLink';
 import { useTypingReveal } from '@/hooks/useTypingReveal';
 
@@ -110,6 +109,7 @@ const CONTENT = {
     '',
     '> Additional Questions? Email info@byuhspc.org',
     '',
+    '> PROGRAM TERMINATED',
   ],
 };
 
@@ -126,15 +126,13 @@ const calculateTotalLength = () => {
 
 const FAQ = () => {
   const scrollTargetRef = useRef<HTMLDivElement | null>(null);
-  const endCursorRef = useRef<HTMLDivElement | null>(null);
   const totalLength = useMemo(() => calculateTotalLength(), []);
-  const { visibleLength, isComplete } = useTypingReveal({ totalLength, charsPerKeypress: 5 });
+  const { visibleLength } = useTypingReveal({ totalLength, charsPerKeypress: 5 });
 
   // Scroll to keep the revealed text / cursor in view
   useEffect(() => {
-    const target = isComplete ? endCursorRef.current : scrollTargetRef.current;
-    target?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-  }, [visibleLength, isComplete]);
+    scrollTargetRef.current?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }, [visibleLength]);
 
   // Track cumulative index for each section
   let currentIndex = 0;
@@ -241,31 +239,6 @@ const FAQ = () => {
         {/* Footer Section */}
         <section>{renderSection('footer', footerStart, 'footer')}</section>
 
-        {/* Email Link - show when footer section is visible */}
-        {visibleLength > footerStart + CONTENT.footer.slice(0, -1).reduce((sum, l) => sum + l.length + 1, 0) && (
-          <section>
-            <div className="text-glow my-2 leading-7">
-              {'  > '}
-              <a
-                href="mailto:info@byuhspc.org"
-                className="text-accent hover:bg-accent hover:text-accent-foreground transition-colors duration-150 px-1 text-glow focus:outline-none focus:ring-2 focus:ring-accent"
-              >
-                [EMAIL]
-              </a>
-              {' - Contact us at info@byuhspc.org'}
-            </div>
-          </section>
-        )}
-
-        {/* Show blinking cursor at the end when complete */}
-        {isComplete && (
-          <section>
-            <div ref={endCursorRef} className="mt-4 text-glow leading-7">
-              {'> '}
-              <TerminalCursor />
-            </div>
-          </section>
-        )}
       </div>
     </Terminal>
   );
