@@ -388,8 +388,10 @@ const Index = () => {
           <div className="text-glow text-muted-foreground">
             {'  > [RULES] - View complete rulebook (coming soon)'}
           </div>
-          <div className="text-glow text-muted-foreground">
-            {'  > [FAQ] - Frequently asked questions (coming soon)'}
+          <div className="text-glow">
+            {'  > '}
+            <TerminalLink to="/faq">[FAQ]</TerminalLink>
+            {' - Frequently asked questions'}
           </div>
         </div>
       )}
