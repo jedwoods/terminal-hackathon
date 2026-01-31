@@ -75,7 +75,15 @@ The project is configured for **https://byuhspc.org/2026/**.
    ```
    This builds the app and copies `dist/index.html` to `dist/404.html` so direct links and refreshes on routes like `/2026/faq` work.
 
-2. **Publish the `dist` folder**  
+2. **Preview the production build locally**  
+   Opening `dist/index.html` with Live Server (or directly) shows a blank page because the build uses base path `/2026/`, so assets are requested from `/2026/assets/...` and 404 when the server root is different. To preview the built site correctly, run:
+   ```sh
+   npm run build:gh
+   npm run preview
+   ```
+   Then open **http://localhost:4173/2026/** in your browser (the preview server may open it automatically).
+
+3. **Publish the `dist` folder**  
    Deploy the contents of `dist` so they are served from the `/2026/` path on your host (e.g. GitHub Pages, with the site or repo configured so that the built files live under `/2026/`).
 
 ## Can I connect a custom domain to my Lovable project?
