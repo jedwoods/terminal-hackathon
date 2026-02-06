@@ -1,8 +1,11 @@
 import { useState, useEffect, useCallback } from 'react';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 interface UseTypingRevealOptions {
   totalLength: number;
   charsPerKeypress?: number;
+  /** When true, show all content immediately for all users (e.g. FAQ page) */
+  revealAllInitially?: boolean;
 }
 
 interface UseTypingRevealReturn {
@@ -15,8 +18,18 @@ interface UseTypingRevealReturn {
 export const useTypingReveal = ({
   totalLength,
   charsPerKeypress = 3,
+  revealAllInitially = false,
 }: UseTypingRevealOptions): UseTypingRevealReturn => {
-  const [visibleLength, setVisibleLength] = useState(0);
+  const isMobile = useIsMobile();
+  const showAllImmediately = revealAllInitially || isMobile;
+  const [visibleLength, setVisibleLength] = useState(showAllImmediately ? totalLength : 0);
+
+  // On mobile or revealAllInitially, show all text immediately
+  useEffect(() => {
+    if (showAllImmediately) {
+      setVisibleLength(totalLength);
+    }
+  }, [showAllImmediately, totalLength]);
 
   const isComplete = visibleLength >= totalLength;
 
@@ -29,6 +42,9 @@ export const useTypingReveal = ({
   }, []);
 
   useEffect(() => {
+    // Skip keypress listener when content is always visible
+    if (revealAllInitially) return;
+
     const handleKeyDown = (event: KeyboardEvent) => {
       // Ignore if user is typing in an input field
       if (
@@ -53,7 +69,7 @@ export const useTypingReveal = ({
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [isComplete, totalLength, charsPerKeypress, revealAll]);
+  }, [isComplete, totalLength, charsPerKeypress, revealAll, revealAllInitially]);
 
   return {
     visibleLength,

@@ -127,7 +127,11 @@ const calculateTotalLength = () => {
 const FAQ = () => {
   const scrollTargetRef = useRef<HTMLDivElement | null>(null);
   const totalLength = useMemo(() => calculateTotalLength(), []);
-  const { visibleLength } = useTypingReveal({ totalLength, charsPerKeypress: 5 });
+  const { visibleLength } = useTypingReveal({
+    totalLength,
+    charsPerKeypress: 5,
+    revealAllInitially: true,
+  });
 
   // Scroll to keep the revealed text / cursor in view
   useEffect(() => {

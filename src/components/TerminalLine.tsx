@@ -10,6 +10,8 @@ interface TerminalLineProps {
   className?: string;
   prefix?: string;
   tight?: boolean;
+  /** Use for ASCII art - prevents wrapping so lines stay aligned cross-platform */
+  noWrap?: boolean;
 }
 
 export const TerminalLine = forwardRef<HTMLDivElement, TerminalLineProps>(function TerminalLine(
@@ -21,6 +23,7 @@ export const TerminalLine = forwardRef<HTMLDivElement, TerminalLineProps>(functi
     className,
     prefix = '',
     tight = false,
+    noWrap = false,
   },
   ref
 ) {
@@ -40,7 +43,8 @@ export const TerminalLine = forwardRef<HTMLDivElement, TerminalLineProps>(functi
     <div
       ref={ref}
       className={cn(
-        'text-glow whitespace-pre-wrap',
+        'text-glow',
+        noWrap ? 'whitespace-pre' : 'whitespace-pre-wrap',
         tight ? 'min-h-0 leading-[1.15]' : 'min-h-[1.5em] leading-7',
         className
       )}
@@ -91,6 +95,7 @@ export const TerminalBlock = ({
             startIndex={lineStart}
             isLastVisible={isLastVisible}
             tight={tight}
+            noWrap
           />
         );
       })}

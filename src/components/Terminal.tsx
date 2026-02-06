@@ -1,4 +1,5 @@
 import { cn } from '@/lib/utils';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 interface TerminalProps {
   children: React.ReactNode;
@@ -11,6 +12,7 @@ export const Terminal = ({
   className,
   title = 'HACKATHON_TERMINAL_v2.0.26',
 }: TerminalProps) => {
+  const isMobile = useIsMobile();
   return (
     <div
       className={cn(
@@ -31,9 +33,11 @@ export const Terminal = ({
         <div className="w-16" /> {/* Spacer for symmetry */}
       </div>
 
-      {/* Press key instructions - at top */}
+      {/* Press key instructions - at top (mobile: tap to scroll since no keyboard) */}
       <div className="px-4 py-2 border-b border-border text-xs text-muted-foreground text-center">
-        PRESS ANY KEY TO CONTINUE | TAB TO SKIP | © 2026 HACKATHON SYSTEMS
+        {isMobile
+          ? 'TAP & SWIPE TO SCROLL | © 2026 HACKATHON SYSTEMS'
+          : 'PRESS ANY KEY TO CONTINUE | TAB TO SKIP | © 2026 HACKATHON SYSTEMS'}
       </div>
 
       {/* Terminal Content */}
